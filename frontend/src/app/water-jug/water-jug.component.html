@@ -1,0 +1,50 @@
+<div class="row" >
+  <section class="left-side col-md-3">
+    <form #myForm="ngForm" [formGroup]="form" (ngSubmit)="onSubmit(myForm.value)">
+      <p>
+        <label>Bucket X:</label>
+        <input type="number"  formControlName="x" class="form-control" required />
+        <span class="error" *ngIf="x.invalid && (x.touched || x.dirty)">Value must be positive number</span>
+      </p>
+      <p>
+        <label>Bucket Y:</label>
+        <input type="number"formControlName="y" class="form-control" required />
+        <span class="error" *ngIf="y.invalid && (y.touched || y.dirty)">Value must be positive number</span>
+      </p>
+      <p>
+        <label>Amount wanted:</label>
+        <input type="number" formControlName="z" class="form-control" required />
+        <span class="error" *ngIf="z.invalid && (z.touched || z.dirty)">Value must be positive number</span>
+      </p>
+      <p>
+        <button type="submit" [disabled]="!myForm.valid || loading" class="btn btn-primary">Solve</button>
+      </p>
+    </form>
+  </section>
+  <section class="right-side col-md-9">
+    <div *ngIf="loading">
+      <div  class="spinner-border" role="status"></div>
+      <div>
+        <span>Solving...</span>
+      </div>
+    </div>
+    <div *ngIf="result && !loading">
+      <div *ngIf="!result.solvable" class="display-4 error">No Solution!</div>
+      <div *ngIf="result.solvable">
+        <table class="table table-bordered">
+          <tr>
+            <th>Bucket x</th>
+            <th>Bucket y</th>
+            <th>Explanation</th>
+          </tr>
+          <tr *ngFor="let state of result.solution">
+            <td>{{ state.x }}</td>
+            <td>{{ state.y }}</td>
+            <td>{{ state.op }}</td>
+          </tr>
+        </table>
+        <b>Solved</b>
+      </div>
+    </div>
+  </section>
+</div>
